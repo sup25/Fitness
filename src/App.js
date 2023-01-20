@@ -11,6 +11,7 @@ const app = () => {
         <Box width='400'
             sx={{ width: { xl: '1488px' } }}
             m='auto'
+
         >
             {/*render navbar component  */}
             <Navbar />
