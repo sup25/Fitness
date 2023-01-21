@@ -9,6 +9,7 @@ const Home = () => {
     //going to reflect towards all across our application not just in the serch exercises 
     const [bodyPart, setBodyPart] = useState('all')
     const [exercises, setExercises] = useState([])
+    console.log(bodyPart)
 
     // if you don't like passing to many props use React context
     return (

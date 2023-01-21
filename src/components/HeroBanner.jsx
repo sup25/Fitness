@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography, Stack, Button } from '@mui/material';
+import { Box, Typography, Button } from '@mui/material';
 import banner from '../assets/images/banner.jpg';
 const HeroBanner = () => {
     return (
@@ -34,7 +34,8 @@ const HeroBanner = () => {
             >
                 Check out the most effictive exercises
             </Typography>
-            <Button href="exercises" variant="outlined" color="error">Exoplore Exercises</Button>
+
+            <Button href="#exercises" variant="outlined" color="error">Exoplore Exercises</Button>
             <Typography
                 fontWeight={600}
                 color='#ff2625'

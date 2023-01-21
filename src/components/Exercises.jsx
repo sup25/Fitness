@@ -1,48 +1,56 @@
-import React, { useState, useEffect } from 'react'
-import Pagination from '@mui/material/Pagination'
-import { Box, Stack, Typography } from '@mui/material'
-import { exerciseOptions, fetchData } from '../utils/fetchData'
-import ExerciseCard from './ExerciseCard'
+import React, { useEffect, useState } from 'react';
+import Pagination from '@mui/material/Pagination';
+import { Box, Stack, Typography } from '@mui/material';
+
+import { exerciseOptions, fetchData } from '../utils/fetchData';
+import ExerciseCard from './ExerciseCard';
+
 
 const Exercises = ({ exercises, setExercises, bodyPart }) => {
-    const [currentPage, setCurrentPage] = useState(1)
-    const exercisesPerPage = 9;
+    const [currentPage, setCurrentPage] = useState(1);
+    const [exercisesPerPage] = useState(6);
 
-    //we want to show 9 result and so on 
+    useEffect(() => {
+        const fetchExercisesData = async () => {
+            let exercisesData = [];
 
+            if (bodyPart === 'all') {
+                exercisesData = await fetchData('https://exercisedb.p.rapidapi.com/exercises', exerciseOptions);
+            } else {
+                exercisesData = await fetchData(`https://exercisedb.p.rapidapi.com/exercises/bodyPart/${bodyPart}`, exerciseOptions);
+            }
+
+            setExercises(exercisesData);
+        };
+
+        fetchExercisesData();
+    }, [bodyPart]);
+
+    // Pagination
     const indexOfLastExercise = currentPage * exercisesPerPage;
     const indexOfFirstExercise = indexOfLastExercise - exercisesPerPage;
-    const currentExercises = exercises.slice(indexOfFirstExercise, indexOfLastExercise)
+    const currentExercises = exercises.slice(indexOfFirstExercise, indexOfLastExercise);
 
-
-
-
-    const paginate = (e, value) => {
+    const paginate = (event, value) => {
         setCurrentPage(value);
-        window.scrollTo({ top: 1800, behavior: 'smooth' })
-    }
+
+        window.scrollTo({ top: 1800, behavior: 'smooth' });
+    };
+
+
 
     return (
-        <Box id="exercises"
-            sx={{ mt: { lg: '110px' } }}
-            mt="50px"
-            p="30px"
-
-        > <Typography variant="h3" mb="46px">
-                Showing Results
-            </Typography>
-            <Stack direction="row"
-                sx={{ gap: { lg: '110px', xs: '50px' } }}
-                flexWrap="wrap"
-                justifyContent="center"
-            >
-                {currentExercises.map((exercise, index) => (
-                    <ExerciseCard key={index} exercise={exercise} />
+        <Box id="exercises" sx={{ mt: { lg: '109px' } }} mt="50px" p="20px">
+            <Typography variant="h4" fontWeight="bold" sx={{ fontSize: { lg: '44px', xs: '30px' } }} mb="46px">Showing Results</Typography>
+            <Stack direction="row" sx={{ gap: { lg: '107px', xs: '50px' } }} flexWrap="wrap" justifyContent="center">
+                {currentExercises.map((exercise, idx) => (
+                    <ExerciseCard key={idx} exercise={exercise} />
                 ))}
             </Stack>
-            <Stack mt='100px' alignItems="center">
+            <Stack sx={{ mt: { lg: '114px', xs: '70px' } }} alignItems="center">
                 {exercises.length > 9 && (
-                    <Pagination color="standard"
+                    <Pagination
+                        color="standard"
                         shape="rounded"
                         defaultPage={1}
                         count={Math.ceil(exercises.length / exercisesPerPage)}
@@ -52,8 +60,9 @@ const Exercises = ({ exercises, setExercises, bodyPart }) => {
                     />
                 )}
             </Stack>
-        </Box >
-    )
-}
+        </Box>
+    );
+};
 
-export default Exercises
+export default Exercises;
+
